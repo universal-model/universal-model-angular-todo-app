@@ -8,5 +8,4 @@ import { Component } from '@angular/core';
   `,
   styleUrls: []
 })
-export class AppComponent {
-}
+export class AppComponent {}

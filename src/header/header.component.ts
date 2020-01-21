@@ -14,16 +14,12 @@ import store from '../store/store';
   `,
   styleUrls: []
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
   headerState = initialHeaderState;
   changeUserName = changeUserName;
 
   ngOnInit(): void {
     const { headerState } = store.getState();
-    store.startUsingState(this, { headerState });
-  }
-
-  ngOnDestroy(): void {
-    store.stopUsingState(this);
+    store.useState(this, { headerState });
   }
 }

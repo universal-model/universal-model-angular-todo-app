@@ -29,7 +29,7 @@ import todoListController from './controller/todoListController';
   `,
   styleUrls: []
 })
-export class TodolistComponent implements OnInit, OnDestroy {
+export class TodoListComponent implements OnInit, OnDestroy {
   todosState = initialTodosState;
   shownTodos = [] as Todo[];
   toggleShouldShowOnlyDoneTodos = toggleShouldShowOnlyDoneTodos;
@@ -38,16 +38,14 @@ export class TodolistComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const { todosState } = store.getState();
-    store.startUsingState(this, { todosState });
+    store.useState(this, { todosState });
     const { shownTodos } = store.getSelectors();
-    store.startUsingSelectors(this, { shownTodos });
+    store.useSelectors(this, { shownTodos });
     fetchTodos();
     document.addEventListener('keypress', todoListController.handleKeyPress);
   }
 
   ngOnDestroy(): void {
     document.removeEventListener('keypress', todoListController.handleKeyPress);
-    store.stopUsingState(this);
-    store.stopUsingSelectors(this);
   }
 }
