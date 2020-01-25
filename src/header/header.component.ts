@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import initialHeaderState from './model/state/initialHeaderState';
-import changeUserName from './model/actions/changeUserName';
-import store from '../store/store';
+import { Component } from '@angular/core';
+import initialHeaderState from '@/header/model/state/initialHeaderState';
+import changeUserName from '@/header/model/actions/changeUserName';
+import store from '@/store/store';
 
 @Component({
   selector: 'app-header-view',
@@ -14,11 +14,11 @@ import store from '../store/store';
   `,
   styleUrls: []
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   headerState = initialHeaderState;
   changeUserName = changeUserName;
 
-  ngOnInit(): void {
+  constructor() {
     const { headerState } = store.getState();
     store.useState(this, { headerState });
   }

@@ -1,23 +1,23 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import initialTodosState, {Todo} from './model/state/initialTodosState';
-import toggleShouldShowOnlyDoneTodos from './model/actions/toggleShouldShowOnlyDoneTodos';
-import toggleIsDoneTodo from './model/actions/toggleIsDoneTodo';
-import removeTodo from './model/actions/removeTodo';
-import store from '../store/store';
-import fetchTodos from './model/actions/fetchTodos';
-import todoListController from './controller/todoListController';
+import initialTodosState, { Todo } from '@/todolist/model/state/initialTodosState';
+import toggleShouldShowOnlyDoneTodos from '@/todolist/model/actions/toggleShouldShowOnlyUnDoneTodos';
+import toggleIsDoneTodo from '@/todolist/model/actions/toggleIsDoneTodo';
+import removeTodo from '@/todolist/model/actions/removeTodo';
+import store from '@/store/store';
+import fetchTodos from '@/todolist/model/actions/fetchTodos';
+import todoListController from '@/todolist/controller/todoListController';
 
 @Component({
   selector: 'app-todo-list-view',
   template: `
     <div>
       <input
-        id="shouldShowOnlyDoneTodos"
+        id="shouldShowOnlyUnDoneTodos"
         type="checkbox"
-        [checked]="todosState.shouldShowOnlyDoneTodos"
-        (click)="toggleShouldShowOnlyDoneTodos()"
+        [checked]="todosState.shouldShowOnlyUnDoneTodos"
+        (click)="toggleShouldShowOnlyUnDoneTodos()"
       />
-      <label for="shouldShowOnlyDoneTodos">Show only done todos</label>
+      <label for="shouldShowOnlyUnDoneTodos">Show only undone todos</label>
       <ul>
         <li *ngFor="let todo of shownTodos">
           <input id="todo.name" type="checkbox" [checked]="todo.isDone" (click)="toggleIsDoneTodo(todo)" />
@@ -32,15 +32,17 @@ import todoListController from './controller/todoListController';
 export class TodoListComponent implements OnInit, OnDestroy {
   todosState = initialTodosState;
   shownTodos = [] as Todo[];
-  toggleShouldShowOnlyDoneTodos = toggleShouldShowOnlyDoneTodos;
+  toggleShouldShowOnlyUnDoneTodos = toggleShouldShowOnlyDoneTodos;
   toggleIsDoneTodo = toggleIsDoneTodo;
   removeTodo = removeTodo;
 
+  constructor() {
+    const [{ todosState }, { shownTodos }] = store.getStateAndSelectors();
+    store.useStateAndSelectors(this, { todosState }, { shownTodos });
+  }
+
   ngOnInit(): void {
-    const { todosState } = store.getState();
-    store.useState(this, { todosState });
-    const { shownTodos } = store.getSelectors();
-    store.useSelectors(this, { shownTodos });
+    // noinspection JSIgnoredPromiseFromCall
     fetchTodos();
     document.addEventListener('keypress', todoListController.handleKeyPress);
   }

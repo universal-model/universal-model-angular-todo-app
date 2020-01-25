@@ -1,11 +1,12 @@
-import { State } from '../../../store/store';
-import { Todo } from './initialTodosState';
+import { State } from '@/store/store';
+import { Todo } from '@/todolist/model/state/initialTodosState';
 
 const createTodoListStateSelectors = <T extends State>() => ({
   shownTodos: (state: T) =>
     state.todosState.todos.filter(
       (todo: Todo) =>
-        (state.todosState.shouldShowOnlyDoneTodos && todo.isDone) || !state.todosState.shouldShowOnlyDoneTodos
+        (state.todosState.shouldShowOnlyUnDoneTodos && !todo.isDone) ||
+        !state.todosState.shouldShowOnlyUnDoneTodos
     )
 });
 

@@ -1,5 +1,5 @@
-import { Todo } from '../state/initialTodosState';
-import store from '../../../store/store';
+import { Todo } from '@/todolist/model/state/initialTodosState';
+import store from '@/store/store';
 
 export default function removeTodo(todoToRemove: Todo): void {
   const { todosState } = store.getState();
