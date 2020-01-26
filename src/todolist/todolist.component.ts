@@ -18,27 +18,32 @@ import todoListController from '@/todolist/controller/todoListController';
         (click)="toggleShouldShowOnlyUnDoneTodos()"
       />
       <label for="shouldShowOnlyUnDoneTodos">Show only undone todos</label>
-      <ul>
-        <li *ngFor="let todo of shownTodos">
-          <input id="todo.name" type="checkbox" [checked]="todo.isDone" (click)="toggleIsDoneTodo(todo)" />
-          <label for="todo.name">{{ todo.name }}</label>
-          <button (click)="removeTodo(todo)">Remove</button>
-        </li>
-      </ul>
+      <div *ngIf="todosState.isFetchingTodos">Fetching todos...</div>
+      <div *ngIf="todosState.hasTodosFetchFailure; else todoList">Failed to fetch todos</div>
+      <ng-template #todoList>
+        <ul>
+          <li *ngFor="let todo of shownTodos">
+            <input id="todo.name" type="checkbox" [checked]="todo.isDone" (click)="toggleIsDoneTodo(todo)" />
+            <label for="todo.name">{{ userName }}: {{ todo.name }}</label>
+            <button (click)="removeTodo(todo)">Remove</button>
+          </li>
+        </ul>
+      </ng-template>
     </div>
   `,
   styleUrls: []
 })
 export class TodoListComponent implements OnInit, OnDestroy {
-  todosState = initialTodosState;
-  shownTodos = [] as Todo[];
+  todosState: typeof initialTodosState;
+  shownTodos: Todo[];
+  userName: string;
   toggleShouldShowOnlyUnDoneTodos = toggleShouldShowOnlyDoneTodos;
   toggleIsDoneTodo = toggleIsDoneTodo;
   removeTodo = removeTodo;
 
   constructor() {
-    const [{ todosState }, { shownTodos }] = store.getStateAndSelectors();
-    store.useStateAndSelectors(this, { todosState }, { shownTodos });
+    const [{ todosState }, { shownTodos, userName }] = store.getStateAndSelectors();
+    store.useStateAndSelectors(this, { todosState }, { shownTodos, userName });
   }
 
   ngOnInit(): void {

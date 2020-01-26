@@ -15,7 +15,7 @@ import store from '@/store/store';
   styleUrls: []
 })
 export class HeaderComponent {
-  headerState = initialHeaderState;
+  headerState: typeof initialHeaderState;
   changeUserName = changeUserName;
 
   constructor() {
