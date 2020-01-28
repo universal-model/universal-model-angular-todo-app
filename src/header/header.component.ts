@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import initialHeaderState from '@/header/model/state/initialHeaderState';
 import changeUserName from '@/header/model/actions/changeUserName';
 import store from '@/store/store';
 
@@ -7,7 +6,7 @@ import store from '@/store/store';
   selector: 'app-header-view',
   template: `
     <div>
-      <h1>{{ headerState.userName }}</h1>
+      <h1>{{ headerText }}</h1>
       <label for="userName">User name:</label>
       <input #userNameInput id="userName" (change)="changeUserName(userNameInput.value)" />
     </div>
@@ -15,11 +14,11 @@ import store from '@/store/store';
   styleUrls: []
 })
 export class HeaderComponent {
-  headerState: typeof initialHeaderState;
+  headerText: string;
   changeUserName = changeUserName;
 
   constructor() {
-    const { headerState } = store.getState();
-    store.useState(this, { headerState });
+    const { headerText } = store.getSelectors();
+    store.useSelectors(this, { headerText });
   }
 }
