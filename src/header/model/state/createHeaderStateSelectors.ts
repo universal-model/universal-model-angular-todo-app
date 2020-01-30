@@ -1,12 +1,15 @@
-import { State } from '@/store/store';
-import { Todo } from '@/todolist/model/state/initialTodosState';
+import {State} from '@/store/store';
+import createTodoListStateSelectors from '@/todolist/model/state/createTodoListStateSelectors';
 
 const createHeaderStateSelectors = <T extends State>() => ({
   userName: (state: T) => state.headerState.userName,
   headerText: (state: T) => {
-    const unDoneTodoCount = state.todosState.todos.filter((todo: Todo) => !todo.isDone).length;
-    const todoCount = state.todosState.todos.length;
-    return `${state.headerState.userName} (${unDoneTodoCount}/${todoCount})`;
+    const {
+      todoCount: selectTodoCount,
+      unDoneTodoCount: selectUnDoneTodoCount
+    } = createTodoListStateSelectors<T>();
+
+    return `${state.headerState.userName} (${selectUnDoneTodoCount(state)}/${selectTodoCount(state)})`;
   }
 });
 
