@@ -49,10 +49,10 @@ export class TodoListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // noinspection JSIgnoredPromiseFromCall
     fetchTodos();
-    document.addEventListener('keypress', todoListController.handleKeyPress);
+    document.addEventListener('keypress', todoListController.handleKeyDown);
   }
 
   ngOnDestroy(): void {
-    document.removeEventListener('keypress', todoListController.handleKeyPress);
+    document.removeEventListener('keypress', todoListController.handleKeyDown);
   }
 }
