@@ -11,9 +11,12 @@ const initialState = {
 
 export type State = typeof initialState;
 
-const selectors = combineSelectors([
-  createTodoListStateSelectors<State>(),
-  createHeaderStateSelectors<State>()
-]);
+const headerStateSelectors = createHeaderStateSelectors<State>();
+const todoListStateSelectors = createTodoListStateSelectors<State>();
 
-export default createStore(initialState, selectors);
+const selectors = combineSelectors<State, typeof headerStateSelectors, typeof todoListStateSelectors>(
+  headerStateSelectors,
+  todoListStateSelectors
+);
+
+export default createStore<State, typeof selectors>(initialState, selectors);
